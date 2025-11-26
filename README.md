@@ -4,6 +4,7 @@ This project aims to analyze and evaluate the performance and risk levels of mut
 The analysis combines Exploratory Data Analysis (EDA), predictive modeling, and model optimization to create a robust pipeline that can classify mutual funds into risk categories such as Open Ended, Close Ended, and Interval Funds.
 This work demonstrates how data-driven insights and machine learning algorithms can enhance financial decision-making, risk assessment, and portfolio management.
 
+
 🎯 Objectives
 To explore and visualize key financial indicators of mutual funds.
 To identify the most influential factors impacting fund performance.
@@ -111,3 +112,4 @@ Integrate additional ML models (Random Forest, XGBoost).
 Implement a web dashboard for interactive performance analysis.
 Incorporate time-series forecasting of NAV trends.
 Add risk scoring using volatility or Sharpe ratio.
+
