@@ -1,115 +1,168 @@
-💹 Performance Analysis and Risk Evaluation of Mutual Funds Using Machine Learning Techniques
-📘 Project Overview
-This project aims to analyze and evaluate the performance and risk levels of mutual funds using machine learning techniques. By leveraging historical financial data, the project identifies the key factors influencing mutual fund performance and classifies funds based on their risk characteristics.
-The analysis combines Exploratory Data Analysis (EDA), predictive modeling, and model optimization to create a robust pipeline that can classify mutual funds into risk categories such as Open Ended, Close Ended, and Interval Funds.
-This work demonstrates how data-driven insights and machine learning algorithms can enhance financial decision-making, risk assessment, and portfolio management.
+💹 Performance Analysis & Risk Evaluation of Mutual Funds Using Machine Learning
+📘 Overview
 
+This project explores how machine learning can help investors understand and compare mutual funds more effectively.
+It focuses on two things:
 
-🎯 Objectives
-To explore and visualize key financial indicators of mutual funds.
-To identify the most influential factors impacting fund performance.
-To develop and evaluate machine learning models for fund classification and risk analysis.
-To optimize model parameters for improved prediction accuracy and generalization.
-To present comparative insights between baseline and optimized models.
+1️⃣ Analysing Fund Performance Using Multiple ML Models
+I built a full pipeline that trains and evaluates several models (Logistic Regression, Random Forest, and XGBoost), compares how they perform, and identifies which features influence the predictions the most.
 
-🧠 Methodology
-1️⃣ Data Collection & Preparation
-Dataset: Mutual Fund Data (Kaggle)
-Loaded and cleaned raw financial data.
-Handled missing values and inconsistent entries.
-Converted numerical and categorical features into a machine-readable format.
+2️⃣ Predicting Mutual Fund Risk Using a Deployed API
+A separate model classifies mutual funds into Low, Medium, or High risk.
+This model is deployed using FastAPI, and comes with a clean modern UI where users can input fund details and instantly get a risk score.
+Together, these two parts demonstrate how machine learning can support real-world financial decision-making, from analysis to deployment.
 
+🎯 What This Project Aims to Do
+
+✔️ Understand mutual fund behaviour through data
+✔️ Find which features (AUM, NAV, AMC, Scheme Type, etc.) matter most
+✔️ Train & compare multiple machine learning models
+✔️ Improve model performance through hyperparameter tuning
+✔️ Build an end-to-end prediction system that anyone can use
+✔️ Present results with clean visuals and meaningful insights
+
+This makes it suitable not only for academic submissions but also for interviews and real-world applications.
+
+🧠 How the Project Works
+1️⃣ Data Preparation
+The dataset is taken from Kaggle and includes:
+Scheme details
+AMC details
+NAV history
+AUM values
+Minimum investment
+Scheme category (used for risk mapping)
+The pipeline:
+Cleans and formats the data
+Converts categorical features to machine-readable form
+Repairs numeric columns (e.g., minimum investment with commas)
+Calculates extra features such as Fund Age
+Removes missing or inconsistent rows
+This creates a structured dataset ready for both the performance models and the risk prediction model.
 2️⃣ Exploratory Data Analysis (EDA)
-Performed detailed EDA to understand fund structure, distribution, and correlations.
-Generated insightful visualizations including:
-Fund type distribution (Open/Close Ended)
-Correlation heatmap of NAV, AUM, and risk indicators
-NAV vs AUM scatter plots
-Launch year trends
+Before modeling, the project generates clear visualizations that help explain the structure of mutual funds:
+📊 Fund type distribution
+🔥 Correlation heatmaps
+📈 NAV vs AUM scatterplots
+📉 AUM trends
+🧮 Class balance
+The visuals give an intuitive feel for the dataset and make the final model insights much easier to understand.
 
-3️⃣ Machine Learning Modeling
-Implemented Logistic Regression as the base classification model to predict mutual fund types based on financial attributes.
+3️⃣ Machine Learning Models (Performance Pipeline)
+Three models are trained:
+Logistic Regression
+Random Forest
+XGBoost
+Each is trained twice:
+Baseline model (default settings)
+Tuned model (optimized using GridSearchCV + Stratified K-Fold CV)
+Each model is evaluated on:
+Accuracy
+Macro F1-score
+Confusion matrix
+Classification report
+All results are saved into a structured reports/ directory.
+The pipeline also produces:
+📌 Baseline vs Tuned performance comparison
+📌 Before/After visualization across all models
+📌 Best model selection based on Macro F1
 
-4️⃣ Model Optimization
-Used GridSearchCV for hyperparameter tuning to improve accuracy and generalization.
-Compared baseline vs optimized model performance using accuracy and macro F1-score metrics.
+4️⃣ Best Model Feature Importance
+Once the best model is chosen:
+Its full feature importance table is saved
+A bar chart of the top features is generated
+A clean heatmap visualises the importance distribution
+Feature names are automatically converted into more human-friendly versions like:
+AMC_ICICI → AMC: ICICI
+Scheme_Type_Open_Ended → Scheme Type: Open Ended
+Scheme_Min_Amt_num → Minimum Investment
+This makes the visuals extremely readable and presentation-ready.
+🔐 Risk Prediction Model (Deployed API)
+This part of the project is designed to feel real and practical.
+It uses a Random Forest Classifier trained on engineered features such as:
+NAV
+Average AUM
+Minimum investment
+Fund age
+Scheme type
+AMC
+NAV option
+AAUM quarter
+The model predicts whether a fund is:
+🟢 Low Risk
 
-5️⃣ Evaluation & Visualization
-Evaluated model using Accuracy, Precision, Recall, and F1-Score.
-Visualized comparison between baseline and optimized models using bar charts.
-Saved all results and metrics in the reports/ directory for reference.
+🟡 Medium Risk
 
-📊 Key Results
-Baseline model achieved high accuracy but moderate class balance (F1-score).
-After optimization, model performance improved significantly.
-Detailed visualization highlights the improvement between pre- and post-optimization stages.
+🔴 High Risk
 
-🧩 Project Structure
+The entire system is deployed using FastAPI, with:
+A modern HTML homepage
+A user-friendly prediction form
+A JSON API endpoint for programmatic use
+A dedicated model-info page showing the model summary
+This makes the project industry-ready and easy to demonstrate.
+
+🧩 Project Structure (Human-Friendly Explanation)
 MUTUAL-FUND-ML/
 │
-├── data/                   # Dataset folder
-│   └── mutual-fund-data.csv
+├── data/                 → Raw dataset
+├── models/               → Saved ML models
+├── reports/              → All figures & metrics
+│   ├── figures/          → PNG charts
+│   └── metrics/          → Accuracy, F1, confusion matrix, etc.
 │
-├── reports/                # Visualizations and metrics
-│   ├── figures/
-│   └── metrics/
+├── src/                  → Core logic
+│   ├── mutual_funds.py   → Full training + evaluation pipeline
+│   ├── config.py         → Central settings
+│   ├── eda.py            → Visual analysis
+│   ├── utils.py          → Helper utilities
+│   └── pipeline.py       → Runs the whole pipeline
 │
-├── src/                    # Core logic and modules
-│   ├── config.py           # Global configurations
-│   ├── data_prep.py        # Data loading and preprocessing
-│   ├── eda.py              # Exploratory Data Analysis
-│   ├── model_baseline.py   # Baseline model
-│   ├── model_optimized.py  # Optimized model (GridSearch)
-│   ├── evaluate.py         # Evaluation metrics
-│   ├── plot.py             # Visualization scripts
-│   ├── utils.py            # Helper utilities
-│   └── test.py             # Debugging script
-│
-├── run.py                  # Main execution script
-├── project.py              # Experimentation file
-├── requirements.txt         # Python dependencies
+├── templates/            → Frontend UI for the API
+├── train.py              → Run entire ML pipeline
+├── train_risk_model.py   → Train the deployed risk model
+├── serve.py              → FastAPI app
+├── runner.py             → train/serve combined runner
 └── README.md
 
-🧮 Tech Stack
 
-Programming Language: Python 🐍
-Libraries:
-pandas, numpy – Data processing
-matplotlib, seaborn – Visualization
-scikit-learn – Machine Learning
-reportlab – Report generation
-Environment: Visual Studio Code / Jupyter
+Everything is modular, cleanly separated, and easy to maintain.
+🧮 Technologies Used
+Python
+scikit-learn
+XGBoost
+matplotlib & seaborn
+FastAPI + Jinja2
+joblib
 
-🧾 Insights from EDA
+📊 Key Insights From the Project
+Certain AMCs and Scheme Types strongly influence the risk level.
+Features like AUM, minimum investment, and fund age play a major role.
+Tuned models consistently outperform baseline versions.
+XGBoost or Random Forest often becomes the best-performing model depending on dataset characteristics.
+The deployed risk model performs well (~88% accuracy) and generalizes cleanly.
 
-Most funds are Open Ended, indicating investor flexibility.
-Strong correlation found between NAV and AUM, as expected in fund performance.
-Steady rise in fund launches post-2010, suggesting growing investor participation.
-Some categorical columns (like fund type and AMC) significantly impact fund classification.
-
-🧾 Conclusion
-This project demonstrates the power of machine learning in financial analytics.
-By automating the process of analyzing mutual fund data, it enables:
-More accurate performance evaluation
-Better understanding of risk factors
-Data-driven investment decisions
-The framework is modular and extendable — it can be adapted to other financial domains like portfolio optimization, ETF analysis, or stock risk prediction.
-
-🚀 How to Run
-1️⃣ Clone the repository:
-git clone https://github.com/Rohith-7715/Performance-Analysis-and-Risk-Evaluation-of-Mutual-Funds-Using-Machine-Learning-Techniques
-cd mutual-fund-ml
-2️⃣ Install dependencies:
+🚀 How to Run the Project
+Install dependencies
 pip install -r requirements.txt
-3️⃣ Run the complete project pipeline:
-python run.py
-4️⃣ View results:
-Figures: reports/figures/
-Metrics: reports/metrics/
+Run EDA
+python -m src.eda
+Run the full model training pipeline
+python train.py
+Train the risk prediction model
+python train_risk_model.py
+Launch the FastAPI app
+python runner.py serve
 
-🧠 Future Enhancements
-Integrate additional ML models (Random Forest, XGBoost).
-Implement a web dashboard for interactive performance analysis.
-Incorporate time-series forecasting of NAV trends.
-Add risk scoring using volatility or Sharpe ratio.
 
+Then open:
+
+👉 http://localhost:8000/
+to access the web interface.
+
+🧠 Future Improvements
+
+Add time-series forecasting (predict future NAV)
+Add risk metrics such as Sharpe Ratio
+Deploy the API on cloud (AWS/GCP/Azure)
+Build a full dashboard with Streamlit
