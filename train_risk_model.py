@@ -1,16 +1,3 @@
-# train_risk_model.py
-
-"""
-Main training pipeline for the Mutual Fund Risk project.
-
-Steps:
-1. Run EDA (src.eda.run_eda)
-2. Train & compare multiple models on the original target
-   (src.mutual_funds_models_all_in_one.run_models)
-3. Train the final RandomForest Risk model (Low / Medium / High)
-   and save it as models/risk_model.joblib
-"""
-
 from pathlib import Path
 import os
 
@@ -218,3 +205,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
