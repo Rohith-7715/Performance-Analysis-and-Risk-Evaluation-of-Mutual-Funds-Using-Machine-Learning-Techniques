@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mutual Fund Risk Evaluation</title>
+    <!-- IMPORTANT: load CSS via url_for so FastAPI static mounting works -->
+    <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}">
+</head>
+<body class="page">
+<div class="page-shell">
+
+    <!-- Main card -->
+    <div class="card hero-card">
+        <div class="hero-header">
+            <span class="pill pill-blue">ML-powered · Risk Classification</span>
+        </div>
+
+        <h1 class="hero-title">
+            Performance Analysis &amp; Risk Evaluation of Mutual Funds
+        </h1>
+
+        <p class="hero-subtitle">
+            This web app uses machine learning to classify mutual funds into
+            <strong>Low</strong>, <strong>Medium</strong> or <strong>High</strong> risk,
+            based on NAV, AUM, minimum investment, fund age and scheme characteristics.
+        </p>
+
+        <div class="hero-layout">
+            <!-- Left column -->
+            <div class="hero-left">
+                <h3>Best Model</h3>
+                <ul class="bullet-list">
+                    <li><strong>Algorithm:</strong> {{ model_info.algorithm if model_info else "Random Forest Classifier" }}</li>
+                    <li><strong>Task:</strong> Mutual Fund Risk Classification (Low / Medium / High)</li>
+                    <li><strong>Inputs:</strong> NAV, Average AUM, Minimum Investment, Fund Age,
+                        AMC, Scheme Type, NAV Option, AAUM Quarter</li>
+                </ul>
+
+                <div class="hero-buttons">
+                    <a href="/predict" class="btn btn-primary">Open Risk Prediction Tool</a>
+                    <a href="/model-info" class="btn btn-ghost">View Model Performance &amp; Features</a>
+                </div>
+            </div>
+
+            <!-- Right column: simple graphic -->
+            <div class="hero-right">
+                <div class="hero-chart">
+                    <div class="hero-circle hero-circle-low">
+                        <span>Low</span>
+                        <strong>{{ "%.2f"|format(model_info.metrics.f1_low) if model_info else "0.83" }}</strong>
+                        <small>F1-score</small>
+                    </div>
+                    <div class="hero-circle hero-circle-med">
+                        <span>Med</span>
+                        <strong>{{ "%.2f"|format(model_info.metrics.f1_medium) if model_info else "0.92" }}</strong>
+                        <small>F1-score</small>
+                    </div>
+                    <div class="hero-circle hero-circle-high">
+                        <span>High</span>
+                        <strong>{{ "%.2f"|format(model_info.metrics.f1_high) if model_info else "0.78" }}</strong>
+                        <small>F1-score</small>
+                    </div>
+                    <div class="hero-accuracy">
+                        <span>Overall accuracy</span>
+                        <strong>{{ "%.0f"|format(model_info.metrics.accuracy * 100) if model_info else "88" }}%</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Key stats row -->
+    <div class="card stats-card">
+        <h3 class="section-title">Key Evaluation Metrics (Test Set)</h3>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-label">Accuracy</span>
+                <span class="stat-value">
+                    {{ "%.0f"|format(model_info.metrics.accuracy * 100) if model_info else "88" }}%
+                </span>
+                <span class="stat-caption">Overall correct risk predictions</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Macro F1</span>
+                <span class="stat-value">0.85</span>
+                <span class="stat-caption">Balanced performance across all risk levels</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Data Size</span>
+                <span class="stat-value">15k+</span>
+                <span class="stat-caption">Mutual fund records used for training</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Risk legend + pipeline graphic -->
+    <div class="card">
+        <div class="card-split">
+            <!-- Risk legend -->
+            <div class="risk-legend-block">
+                <h3 class="section-title">Risk Categories</h3>
+                <p class="section-text">
+                    The model groups schemes into three intuitive risk bands:
+                </p>
+                <ul class="risk-legend">
+                    <li>
+                        <span class="risk-dot risk-low"></span>
+                        <strong>Low risk</strong>
+                        <span class="risk-desc">Liquid / short-term debt schemes</span>
+                    </li>
+                    <li>
+                        <span class="risk-dot risk-med"></span>
+                        <strong>Medium risk</strong>
+                        <span class="risk-desc">Hybrid and balanced-allocation schemes</span>
+                    </li>
+                    <li>
+                        <span class="risk-dot risk-high"></span>
+                        <strong>High risk</strong>
+                        <span class="risk-desc">Equity-heavy, sectoral &amp; thematic funds</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Pipeline graphic -->
+            <div class="pipeline-block">
+                <h3 class="section-title">How the ML Pipeline Works</h3>
+                <div class="pipeline">
+                    <div class="pipeline-step">
+                        <div class="pipeline-icon">1</div>
+                        <div class="pipeline-text">
+                            <strong>Data Preparation</strong>
+                            <p>Clean historical mutual fund data, engineer features like fund age and
+                               minimum investment.</p>
+                        </div>
+                    </div>
+                    <div class="pipeline-arrow"></div>
+                    <div class="pipeline-step">
+                        <div class="pipeline-icon">2</div>
+                        <div class="pipeline-text">
+                            <strong>Model Training</strong>
+                            <p>Compare multiple algorithms, tune hyperparameters and select the best performer.</p>
+                        </div>
+                    </div>
+                    <div class="pipeline-arrow"></div>
+                    <div class="pipeline-step">
+                        <div class="pipeline-icon">3</div>
+                        <div class="pipeline-text">
+                            <strong>Risk Prediction</strong>
+                            <p>Use the trained model to classify new funds into Low / Medium / High risk,
+                               with confidence scores.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- API section -->
+    <div class="card api-card">
+        <h3 class="section-title">API Access</h3>
+        <p class="section-text">
+            You can also integrate this model into other systems through the JSON API:
+        </p>
+        <ul class="bullet-list">
+            <li><strong>Endpoint:</strong> <code>/api/predict</code></li>
+            <li><strong>Method:</strong> <code>POST</code></li>
+            <li><strong>Content-Type:</strong> <code>application/json</code></li>
+        </ul>
+        <p class="footer-note">
+            Built as part of the project
+            <em>"Performance Analysis and Risk Evaluation of Mutual Funds Using Machine Learning Techniques".</em>
+        </p>
+    </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Model Information</title>
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #f3f4f6;
+            color: #111827;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 28px;
+            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+        }
+
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 12px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 1.6rem;
+        }
+
+        .subtitle {
+            margin-top: 4px;
+            margin-bottom: 0;
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        a {
+            color: #2563eb;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .section-title {
+            margin-top: 1.6rem;
+            margin-bottom: 0.4rem;
+            font-size: 1.05rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 0.6rem;
+            font-size: 0.92rem;
+        }
+
+        th, td {
+            border: 1px solid #e5e7eb;
+            padding: 8px 10px;
+            text-align: left;
+        }
+
+        th {
+            background: #f9fafb;
+            font-weight: 600;
+        }
+
+        .feature-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 0.4rem 0 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .feature-pill {
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: #eff6ff;
+            color: #1d4ed8;
+            font-size: 0.8rem;
+        }
+
+        .note {
+            margin-top: 1.2rem;
+            font-size: 0.85rem;
+            color: #6b7280;
+        }
+    </style>
+</head>
+<body>
+<div class="card">
+    <div class="header-row">
+        <div>
+            <h1>Model Information</h1>
+            <p class="subtitle">
+                Details of the best-performing machine learning model used for mutual fund risk prediction.
+            </p>
+        </div>
+        <div>
+            <a href="/">← Back to Home</a>
+        </div>
+    </div>
+
+    <h3 class="section-title">Overview</h3>
+    <table>
+        <tr>
+            <th>Algorithm</th>
+            <td>{{ model_info.algorithm }}</td>
+        </tr>
+        <tr>
+            <th>Task</th>
+            <td>{{ model_info.task }}</td>
+        </tr>
+    </table>
+
+    <h3 class="section-title">Evaluation Metrics (Test Set)</h3>
+    <table>
+        <tr>
+            <th>Metric</th>
+            <th>Value</th>
+        </tr>
+        <tr>
+            <td>Accuracy</td>
+            <td>{{ '%.2f'|format(model_info.metrics.accuracy) }}</td>
+        </tr>
+        <tr>
+            <td>F1-Score (Low risk)</td>
+            <td>{{ '%.2f'|format(model_info.metrics.f1_low) }}</td>
+        </tr>
+        <tr>
+            <td>F1-Score (Medium risk)</td>
+            <td>{{ '%.2f'|format(model_info.metrics.f1_medium) }}</td>
+        </tr>
+        <tr>
+            <td>F1-Score (High risk)</td>
+            <td>{{ '%.2f'|format(model_info.metrics.f1_high) }}</td>
+        </tr>
+    </table>
+
+    <h3 class="section-title">Features Used by the Model</h3>
+    <ul class="feature-list">
+        {% for feat in model_info.features %}
+            <li class="feature-pill">{{ feat }}</li>
+        {% endfor %}
+    </ul>
+
+    <p class="note">
+        These inputs are preprocessed (scaling, encoding and feature selection) before being passed into
+        the classifier. Together, they capture information about fund size, pricing, structure and age,
+        enabling the model to evaluate the overall risk profile of each mutual fund.
+    </p>
+</div>
+</body>
+</html>
