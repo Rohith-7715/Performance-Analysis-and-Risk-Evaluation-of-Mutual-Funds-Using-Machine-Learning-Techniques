@@ -1,34 +1,4 @@
 # train_risk_model.py
-"""
-Main training pipeline for the Mutual Fund Risk project.
-
-Steps:
-1. Run EDA (src.eda.run_eda)
-2. Train & compare multiple models on the original target
-   (src.mutual_funds_models_all_in_one.run_models)
-3. Train the final RandomForest Risk model (Low / Medium / High)
-   and save it as models/risk_model.joblib
-
-Adds (FAST + WINDOWS-SAFE):
-- Learning Curve plot saved to: reports/figures/learning_curve_risk_model.png
-- Validation Curve plot (loss-like diagnostic for RandomForest) saved to:
-  reports/figures/validation_curve_risk_model.png
-
-Fixes huge train/val gap (overfitting reduction):
-- Remove high-cardinality feature: Scheme_NAV_Name (often acts like an ID)
-- Add RF regularization: max_depth, min_samples_leaf, min_samples_split, max_features
-
-More honest evaluation:
-- Use scoring="f1_macro" for curves (better for imbalanced multiclass)
-
-Speed optimizations:
-- Curves computed on a stratified subset (MAX_CURVE_SAMPLES)
-- Fewer CV folds (<=3), fewer train sizes, fewer param points
-- Lighter clone model for curves (100 trees) while final model stays 200 trees
-
-Windows stability:
-- n_jobs=1 for learning_curve / validation_curve to avoid loky/multiprocessing issues
-"""
 
 from pathlib import Path
 
@@ -373,3 +343,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
