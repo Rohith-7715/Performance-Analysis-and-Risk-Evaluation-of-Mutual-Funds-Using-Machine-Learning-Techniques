@@ -1,9 +1,5 @@
 from pathlib import Path
 
-# =========================
-#         PATHS
-# =========================
-
 # Project root (…/MUTUAL-FUND-ML/)
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
