@@ -1,16 +1,4 @@
 # serve.py
-"""
-FastAPI app for Mutual Fund Risk Prediction.
-
-- Loads the best risk model from models/risk_model.joblib
-- Reads metadata from data/mutual-fund-data.csv to populate dropdowns
-- Exposes:
-    GET  /             -> Home page
-    GET  /predict      -> HTML form for risk prediction
-    POST /predict      -> Handles form submission, shows prediction + probabilities
-    POST /api/predict  -> JSON API for risk prediction
-    GET  /model-info   -> Model details (algorithm, metrics, features)
-"""
 
 from typing import Dict
 from pathlib import Path
@@ -266,3 +254,4 @@ async def model_info(request: Request):
         "model_info": MODEL_INFO,
     }
     return templates.TemplateResponse("model_info.html", context)
+
